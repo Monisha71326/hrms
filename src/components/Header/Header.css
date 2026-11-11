@@ -1,0 +1,156 @@
+/* =====================================================================
+   Header — "floating islands" (blue glass #00308f → #035096)
+   Two separate glass capsules with space around them instead of one bar:
+   [ menu + search ]   [ check-in · icons · profile ]
+   ===================================================================== */
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+
+/* !important so no older header rule (global.css / aqua-theme.css) can shrink it */
+.aqua-stage .app-main>.app-header,.app-main>.app-header,.app-header{
+  position:sticky;top:14px;z-index:30;
+  width:auto!important;height:auto!important;margin:14px 26px 0!important;padding:0!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;
+  display:flex;align-items:center;gap:14px;
+}
+.hd-island{
+  position:relative;height:62px;padding:0 10px;
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(255,255,255,.9);border-radius:31px;
+  box-shadow:0 14px 34px rgba(20,60,130,.16),inset 0 1px 0 #fff;
+  backdrop-filter:blur(18px) saturate(1.3);
+  animation:islandIn .7s cubic-bezier(.2,.8,.2,1) both;
+}
+.hd-left{flex:1;min-width:0}
+.hd-right{flex-shrink:0;padding:0 12px 0 9px;gap:6px;animation-delay:.1s}
+@keyframes islandIn{from{opacity:0;transform:translateY(-18px) scale(.96)}to{opacity:1;transform:none}}
+
+.header-menu{
+  width:42px;height:42px;flex-shrink:0;display:grid;place-items:center;
+  border:0;border-radius:50%;background:rgba(3,80,150,.08);color:#035096;
+  transition:background .25s,transform .25s;
+}
+.header-menu:hover{background:rgba(3,80,150,.16);transform:rotate(90deg)}
+
+/* hamburger: sidebar is always visible on desktop, so hide it there (re-enabled <=1050px below) */
+.app-header .header-menu{display:none!important}
+
+/* ---- Search: fills all free space, glowing gradient ring on focus ---- */
+.global-search{
+  position:relative;isolation:isolate;flex:1;min-width:60px;max-width:none;height:42px;
+  display:flex;align-items:center;gap:10px;padding:0 14px 0 5px;
+  border-radius:21px;background:transparent;
+}
+.global-search:before{ /* animated ring */
+  content:"";position:absolute;inset:-2px;z-index:-2;border-radius:23px;
+  background:conic-gradient(from var(--ang),#00308f,#4f9be6,#a9d0ff,#035096,#00308f);
+  opacity:.28;animation:ringSpin 4s linear infinite;transition:opacity .3s;
+}
+.global-search:after{ /* inner fill */
+  content:"";position:absolute;inset:0;z-index:-1;border-radius:21px;background:#f7faff;
+  box-shadow:inset 0 2px 5px rgba(20,60,130,.1);
+}
+.global-search:focus-within:before{opacity:1}
+@keyframes ringSpin{to{--ang:360deg}}
+
+.search-orb{
+  width:32px;height:32px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;color:#fff;
+  background:linear-gradient(135deg,#00308f,#035096);box-shadow:0 6px 12px rgba(3,80,150,.35);
+}
+.app-header .global-search input,
+.app-header .global-search input:focus{
+  flex:1;min-width:0;height:100%;padding:0;
+  border:0;outline:0;border-radius:0;background:transparent;box-shadow:none;
+  font-size:12.5px;color:#0f2447;
+}
+.app-header .global-search input::placeholder{color:#7a93b8}
+.global-search button{border:0;background:rgba(3,80,150,.1);color:#035096;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;padding:0}
+
+/* ---- Check-in: icon bubble + live time ---- */
+.header-checkin{
+  height:46px;display:flex;align-items:center;gap:10px;padding:0 18px 0 6px;
+  border:0;border-radius:23px;color:#fff;white-space:nowrap;
+  background:linear-gradient(115deg,#00308f,#035096);
+  box-shadow:0 10px 22px rgba(3,80,150,.38);
+  transition:transform .25s,box-shadow .25s;
+}
+.header-checkin:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(3,80,150,.48)}
+.header-checkin.checked{background:linear-gradient(115deg,#035096,#4f9be6)}
+.checkin-icon{position:relative;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.2)}
+.live-dot{position:absolute;right:1px;top:1px;width:9px;height:9px;border-radius:50%;background:#8ee3ff;border:2px solid #035096}
+.live-dot:after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid #8ee3ff;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{from{transform:scale(.6);opacity:.9}to{transform:scale(1.7);opacity:0}}
+.checkin-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15}
+.checkin-text b{font-size:12px;font-weight:700}
+.checkin-text small{font-size:9.5px;opacity:.8;letter-spacing:.3px}
+
+/* ---- Icon buttons ---- */
+.header-icon{
+  position:relative;width:42px;height:42px;padding:0;display:grid;place-items:center;
+  border:0;border-radius:50%;background:transparent;color:#035096;
+  transition:background .25s,transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.header-icon:hover{background:rgba(3,80,150,.1);transform:translateY(-3px) scale(1.08)}
+.notification-trigger i{
+  position:absolute;right:2px;top:2px;width:17px;height:17px;border-radius:20px;
+  display:grid;place-items:center;font-style:normal;font-size:9px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,#ff8fbd,#f0589c);border:2px solid #fff;
+}
+.notification-trigger i:before{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid #f0589c;opacity:0;animation:pulse 2.4s ease-out infinite}
+.header-divider{width:1px;height:28px;margin:0 6px 0 4px;background:linear-gradient(180deg,transparent,rgba(3,80,150,.3),transparent)}
+
+/* ---- Profile ---- */
+.header-profile{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:#0f2447;padding:0;border-radius:24px}
+.profile-text{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:44px}
+.profile-text b{font-size:12px}
+.profile-text small{font-size:10px;color:#6580a8}
+.header-profile svg{color:#035096;transition:transform .3s}
+.header-profile:hover svg{transform:translateY(2px)}
+.header-avatar{
+  position:relative;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;
+  background:conic-gradient(from var(--ang),#00308f,#4f9be6,#a9d0ff,#035096,#00308f);
+  animation:ringSpin 6s linear infinite;
+}
+.header-avatar em{
+  font-style:normal;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;
+  background:linear-gradient(140deg,#035096,#00308f);color:#fff;font-size:10px;font-weight:800;border:2px solid #fff;
+}
+.online-dot{position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#8ee3ff;border:2px solid #fff}
+
+/* ---- Popover ---- */
+.header-popover{
+  position:absolute;top:72px;right:0;z-index:50;min-width:230px;max-width:310px;padding:12px;
+  background:rgba(250,252,255,.97);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.9);border-radius:22px;
+  box-shadow:0 22px 46px rgba(10,40,100,.28);color:#0f2447;
+  animation:islandIn .3s cubic-bezier(.2,.8,.2,1) both;
+}
+.header-popover-top{display:flex;justify-content:space-between;align-items:center;padding:2px 3px 8px}
+.header-popover-top button{display:flex;border:0;background:transparent;color:#6580a8}
+.header-popover>button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:9px 8px;border:0;border-radius:10px;background:transparent;color:#2b4a78;font-size:12px}
+.header-popover>button:hover{background:#e3eefc}
+.header-popover p{margin:0;padding:10px 3px;border-top:1px solid #e2ebf8;font-size:11px}
+.header-popover p small{display:block;margin-top:4px;color:#6580a8;font-size:10px}
+
+/* ---- Responsive ---- */
+@media(max-width:1180px){.profile-text,.header-profile>svg{display:none}}
+@media(max-width:1050px){
+  .app-header .header-menu{display:grid!important}
+  .aqua-stage .app-main>.app-header,.app-main>.app-header,.app-header{margin:10px 14px 0!important;top:10px;gap:10px}
+}
+@media(max-width:650px){
+  .aqua-stage .app-main>.app-header,.app-main>.app-header,.app-header{margin:8px 8px 0!important;top:8px;gap:6px}
+  .hd-island{height:54px;padding:0 6px;border-radius:27px;gap:6px}
+  .hd-right{padding:0 6px;gap:2px}
+  .header-menu{width:36px;height:36px}
+  .global-search{height:38px;padding-right:10px}
+  .search-orb{width:28px;height:28px}
+  .checkin-text,.header-divider,.header-icon[title="Messages"]{display:none}
+  .header-checkin{padding:0 4px;height:40px;width:40px;justify-content:center}
+  .header-icon{width:34px;height:34px}
+  .header-avatar{width:38px;height:38px}.header-avatar em{width:30px;height:30px}
+}
+@media(prefers-reduced-motion:reduce){
+  .hd-island,.global-search:before,.header-avatar,.live-dot:after,.notification-trigger i:before,.header-popover{animation:none!important}
+  .header-checkin,.header-icon,.header-menu{transition:none}
+}
